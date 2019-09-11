@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ws_chatroot</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+<script type="text/javascript">
+	var toUserId=$("#selectName").val();
+	if(toUserId==1 || toUserId==null) {
+		return;
+	}
+	//建立连接，ws对应http、wss对应https
+	socket = new WebSocket("ws://localhost:8080/ws/asset?toUserId="+toUserId);
+	socket.onopen = function(){
+		console.log("Socket已打开");
+	};
+	socket.onmessage = function(){
+		//展示广播的接收的内容接收
+		var response = $("#mass_div");
+		var dataObj = msg.data;
+		var arr = dataObj.split('@^');
+		var sendUser;
+		var acceptMsg;
+		$.each(arr,function(i,item){
+			if(i==0) {
+				sendUser = item;
+			} else {
+				acceptMsg = item;
+			}
+		});
+		if(toUserId==sendUser){
+			response.append("<div class='user-group'>"+);
+		}
+		console.log("Socket已打开");
+	};
+	
+</script>
+</head>
+
+<body>
+	This is my HTML page. CurrentTime: <h3 id="msg"></h3>
+	<br>
+</body>
+</html>

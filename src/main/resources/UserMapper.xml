@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="zhc.ssm.mybatis.UserMapper">
+    <select id="getUserById" resultType="zhc.ssm.mybatis.User">
+        select * from user where id=?
+    </select>
+</mapper>

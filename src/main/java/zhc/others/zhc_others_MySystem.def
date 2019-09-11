@@ -1,0 +1,4 @@
+LIBRARY zhc_others_MySystem.dll
+
+EXPORTS
+Java_zhc_others_MySystem_setOut

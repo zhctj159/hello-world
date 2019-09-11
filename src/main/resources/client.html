@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>client.html</title>
+
+<meta name="keywords" content="keyword1,keyword2,keyword3">
+<meta name="description" content="this is my page">
+<meta name="content-type" content="text/html; charset=UTF-8">
+
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+<script type="text/javascript">
+    window.onload = function(){
+        //1、获取XMLHttpRequest()的对象
+        var req;
+        if(window.XMLHttpRequest){
+            req = new XMLHttpRequest();
+        }else{
+            req = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        //4、处理响应的结果
+        req.onreadystatechange = function(){
+            //这里要查看的状态与状态信息有没有一致，才能返回响应服务器的信息，查看服务器端响应状态，服务器响应一切正常
+            if(req.readyState==4&&req.status==200){
+				document.getElementById("msg").innerText=req.responseText;
+                console.log(req.responseText);
+            }
+        }
+		
+        //2、建立一个连接
+//        req.open("get","http://192.168.99.1:8080/showTime");
+		req.open("get","http://192.168.99.1:8080/realTimeNews");
+        //3发送请求
+        req.send(null);
+    }
+	//短轮询
+//	setInterval(func,1000);
+	
+</script>
+</head>
+
+<body>
+	This is my HTML page. CurrentTime: <h3 id="msg"></h3>
+	<br>
+</body>
+</html>
