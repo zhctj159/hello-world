@@ -13,16 +13,17 @@ import org.springframework.context.annotation.Import;
  * @time 2019年8月14日 上午9:36:48
  */
 @SpringBootApplication
-//@Import({Dog.class,Cat.class})
 @Import(MyConfig.class)
 public class ImportTest {
-	public static void main2(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication.run(ImportTest.class, args);
-		System.out.println(context.getBean(Dog.class));
-		System.out.println(context.getBean(Cat.class));
-		context.close();
+	public static void main(String[] args) throws Exception {
+		ConfigurableApplicationContext applicationContext = SpringApplication.run(ImportTest.class, args);
+		System.out.println(applicationContext.getBean(MyConfig.Cat.class));
+		System.out.println(applicationContext.getBean(MyConfig.Dog.class));
+		System.out.println(applicationContext.getBean("getCat"));
+		applicationContext.close();
 	}
 }
+
 //@Configuration
 class MyConfig {
 	@Bean
@@ -34,12 +35,16 @@ class MyConfig {
 	public Cat getCat() {
 		return new Cat();
 	}
+	
+	class Cat {
+		
+	}
+
+	class Dog {
+		
+	}
 }
 
-class Cat {
-	
-}
 
-class Dog {
-	
-}
+
+

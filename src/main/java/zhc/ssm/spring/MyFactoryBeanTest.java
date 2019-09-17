@@ -33,4 +33,16 @@ public class MyFactoryBeanTest {
 		Object obj2 = context.getBean("&fbHelloWorldService");
 		System.err.println(obj2.getClass().getName());
 	}
+	
+	@Test
+	public void testFactoryBean2() {
+		Object obj1 = context.getBean("user1");
+		System.err.println(obj1);
+		Object obj2 = context.getBean("user2");
+		System.err.println(obj2);
+		Object obj3 = context.getBean("user3");
+		System.err.println(obj3);
+		System.out.println(obj3==obj1);
+		System.out.println(obj3==obj2);
+	}
 }

@@ -1,9 +1,10 @@
 package zhc.ssm.springmvc;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class DispatcherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -110,20 +113,58 @@ public class DispatcherServlet extends HttpServlet {
 	}
 
 	private void scanPackage(String packageName) {
-		System.out.println("scanPackage start");
-		URL url = getClass().getClassLoader().getResource("/"+packageName.replace(".", "/"));
-		String path = url.getFile();
-		File file = new File(path);
-		String[] fileNames = file.list();
-		for (String fileName : fileNames) {
-			File f = new File(path+fileName);
-			System.out.println(path+"||"+f.getName()+"||"+fileName+"||"+file.getName());
-			if (f.isDirectory()) {
-				scanPackage(path+f.getName());
-			} else {
-				files.add(path+f.getName());
-			}
-		}
+		System.out.println("scanPackage start: " + packageName);
+		files.add("zhc.ssm.springmvc.DispatcherServlet");
+		files.add("zhc.ssm.springmvc.MyAutowired");
+		files.add("zhc.ssm.springmvc.MyController");
+		files.add("zhc.ssm.springmvc.MyRequestMapping");
+		files.add("zhc.ssm.springmvc.MyService");
+		files.add("zhc.ssm.springmvc.Service");
+		files.add("zhc.ssm.springmvc.ServiceImpl");
+		files.add("zhc.ssm.springmvc.SpringmvcController");
+//		ClassLoader loader = getClass().getClassLoader();
+//		URL url = loader.getResource("/"+packageName.replace(".", "/"));
+//		String path = url.getFile();
+//		File file = new File(path);
+//		String[] fileNames = file.list();
+//		for (String fileName : fileNames) {
+//			File f = new File(path+fileName);
+//			System.out.println(path+"||"+f.getName()+"||"+fileName+"||"+file.getName());
+//			if (f.isDirectory()) {
+//				scanPackage(path+f.getName());
+//			} else {
+//				files.add(path+f.getName());
+//			}
+//		}
 		System.out.println("scanPackage end");
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		this.doPost(req, resp);
+	}
+ 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String url = req.getRequestURI();
+		String context = req.getContextPath();
+		String path = url.replace(context, "");
+		if (path.startsWith("/")) {
+			path = path.substring(1);
+		}
+		Method method = (Method) handlerMap.get(path);
+		SpringmvcController controller = (SpringmvcController) instances.get(path.split("/")[0]);
+		try {
+			Object ret = method.invoke(controller, new Object[] { req, resp });
+			PrintWriter out = resp.getWriter();
+			out.println(ret);
+			out.close();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
 	}
 }

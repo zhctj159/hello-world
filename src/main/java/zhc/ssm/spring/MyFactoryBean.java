@@ -55,9 +55,11 @@ public class MyFactoryBean implements FactoryBean<Object>,InitializingBean,Dispo
 		return proxyObj==null ? Object.class : proxyObj.getClass();
 	}
 	
+	/** 用于说明getObject返回的是否是同一个对象，由用户实现 */
 	@Override
 	public boolean isSingleton() {
 		return FactoryBean.super.isSingleton();
+//		return false;
 	}
 
 	public String getInterfaceName() {

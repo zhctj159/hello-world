@@ -23,4 +23,19 @@
 		<property name="interfaceName" value="zhc.ssm.spring.HelloWorldService" />
 		<property name="target" ref="helloWorldService" />
 	</bean>
+	
+	<bean id="user1" class="zhc.ssm.spring.User">
+	   <property name="id" value="1" />
+	   <property name="name" value="zhaihc3" />
+	   <property name="age" value="31" />
+	</bean>
+	
+	<bean id="user2" class="zhc.ssm.spring.UserFactoryBean">
+        <property name="userInfo" value="2,zhaihc3,32" />
+    </bean>
+    
+    <bean id="user3" class="zhc.ssm.spring.UserFactoryBean">
+        <property name="userInfo" value="2,zhaihc3,32" />
+        <property name="target" ref="user1" />
+    </bean>
 </beans>
