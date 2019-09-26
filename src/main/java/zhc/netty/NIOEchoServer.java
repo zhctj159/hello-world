@@ -28,7 +28,7 @@ public class NIOEchoServer {
 				Set<SelectionKey> selectionKeys = selector.selectedKeys();
 				Iterator<SelectionKey> selectIter = selectionKeys.iterator();
 				while (selectIter.hasNext()) {
-					SelectionKey selectionKey = (SelectionKey) selectIter.next();
+					SelectionKey selectionKey = selectIter.next();
 					if (selectionKey.isAcceptable()) {
 						SocketChannel clientChannel = serverSocketChannel.accept();
 						if (clientChannel!=null) {

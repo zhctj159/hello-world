@@ -152,7 +152,7 @@ public class DispatcherServlet extends HttpServlet {
 		if (path.startsWith("/")) {
 			path = path.substring(1);
 		}
-		Method method = (Method) handlerMap.get(path);
+		Method method = handlerMap.get(path);
 		SpringmvcController controller = (SpringmvcController) instances.get(path.split("/")[0]);
 		try {
 			Object ret = method.invoke(controller, new Object[] { req, resp });

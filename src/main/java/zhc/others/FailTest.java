@@ -37,15 +37,14 @@ public class FailTest {
 	
 	@Test
     public void test() {
-        ConcurrentHashMap<String, String> phones = new ConcurrentHashMap<>();
-        phones.put("Apple", "iPhone");
-        phones.put("Samsung", "Galaxy");
-        phones.put("Moto", "Z Play");
-
-        Iterator<String> iterator = phones.keySet().iterator();
-        while (iterator.hasNext()) {
-            System.out.println(phones.get(iterator.next()));
-            phones.put("Smartisan", "M1L");
+		ConcurrentHashMap<String, String> phones = new ConcurrentHashMap<>();
+		phones.put("Apple", "iPhone");
+		phones.put("Samsung", "Galaxy");
+		phones.put("Moto", "Z Play");
+		Iterator<String> iterator = phones.keySet().iterator();
+		while (iterator.hasNext()) {
+			System.out.println(phones.get(iterator.next()));
+//			phones.put("Smartisan", "M1L");
         }
     }
 	

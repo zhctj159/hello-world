@@ -22,7 +22,7 @@ public class SingletonTest {
 		Singleton5 instance = Singleton5.instance;
 		Constructor<Singleton5> con = Singleton5.class.getDeclaredConstructor(String.class,int.class);
 		con.setAccessible(true);
-		Singleton5 obj = (Singleton5) con.newInstance("zhaihc3", 32);
+		Singleton5 obj = con.newInstance("zhaihc3", 32);
 		System.out.println("instance==obj ===> " + (instance == obj));
 	}
 	
