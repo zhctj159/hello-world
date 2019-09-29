@@ -14,7 +14,7 @@ public class ConsistencyHash {
 	/** 真实服务器节点信息 */
 	private List<Object> shards = new ArrayList<>();
 	/** 设置虚拟节点数目 */
-	private int VIRTUAL_NUM = 4;
+	private int virtualNum = 4;
 
 	public void init() {
 		shards.add("192.168.0.0-服务器0");
@@ -26,7 +26,7 @@ public class ConsistencyHash {
 		nodes = new TreeMap<Long, Object>();
 		for (int i = 0; i < shards.size(); i++) {
 			Object shardInfo = shards.get(i);
-			for (int j = 0; j < VIRTUAL_NUM; j++) {
+			for (int j = 0; j < virtualNum; j++) {
 				nodes.put(hash(md5("SHARD-" + i + "-NODE-" + j), j), shardInfo);
 			}
 		}
@@ -95,7 +95,7 @@ public class ConsistencyHash {
 					consistencyHash.getShardInfo(
 							consistencyHash.hash(
 									consistencyHash.md5(String.valueOf(i)), 
-									random.nextInt(consistencyHash.VIRTUAL_NUM)
+									random.nextInt(consistencyHash.virtualNum)
 							)
 					)
 			);

@@ -1,17 +1,21 @@
 package zhc.others;
 
+import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.util.concurrent.RateLimiter;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 public class LimiterTest {
 	public static void main(String[] args) {
 		RateLimiter limiter = RateLimiter.create(5);
+		ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("thread-call-runner-%d").build();
 		ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10,
                 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>());
+                new LinkedBlockingQueue<Runnable>(), namedThreadFactory);
 		int count = 0;
 		boolean flag = true;
 		while (flag) {
@@ -28,7 +32,7 @@ public class LimiterTest {
 				@Override
 				public void run() {
 					try {
-						Thread.sleep((long)(Math.random()*300));
+						Thread.sleep(new Random(300).nextLong());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 						Thread.currentThread().interrupt();

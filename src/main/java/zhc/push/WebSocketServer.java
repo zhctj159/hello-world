@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @ServerEndpoint(value="/ws/asset")
 @Component
 public class WebSocketServer {
-	private static final AtomicInteger onlineCount = new AtomicInteger(0);
+	private static final AtomicInteger ONLINE_COUNT = new AtomicInteger(0);
 	/** 线程安全Set，用来存放每个客户端对应的session对象 */
 	private static CopyOnWriteArraySet<Session> sessionSet = new CopyOnWriteArraySet<Session>();
 	/** 线程安全Map，用来存放每个客户端sessionid和用户名的对应关系 */
@@ -33,7 +33,7 @@ public class WebSocketServer {
 		Map<String, List<String>> pathParameters = session.getRequestParameterMap();
 		String userId = pathParameters.get("toUserId").get(0);
 		sessionMap.put(session.getId(), userId);
-		System.out.println("有连接加入，当前连接数为："+onlineCount.incrementAndGet());
+		System.out.println("有连接加入，当前连接数为："+ONLINE_COUNT.incrementAndGet());
 		try {
 			broadCastInfo("系统消息@^用户["+userId+"]加入群聊");
 		} catch (Exception e) {
@@ -48,7 +48,7 @@ public class WebSocketServer {
 		sessionSet.remove(session);
 		String userId = sessionMap.get(session.getId());
 		sessionMap.remove(session.getId());
-		int cnt = onlineCount.decrementAndGet();
+		int cnt = ONLINE_COUNT.decrementAndGet();
 		System.out.println("有连接关闭，当前连接数为："+cnt);
 		try {
 			broadCastInfo("系统消息@^用户["+userId+"]退出群聊");

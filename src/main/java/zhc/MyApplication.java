@@ -13,8 +13,10 @@ import zhc.ssm.springmvc.DispatcherServlet;
 //import zhc.ssm.springmvc.DispatcherServlet2;
 
 /**
+ * ClassName: zhc.MyApplication 
+ * @Description: 我的springboot项目入口
  * @author zhc
- * @time 2019年8月28日 下午3:47:19
+ * @date 2019年9月27日
  */
 @SpringBootApplication
 public class MyApplication {

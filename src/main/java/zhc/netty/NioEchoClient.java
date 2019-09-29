@@ -6,7 +6,13 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Scanner;
 
-public class NIOEchoClient {
+/**
+ * ClassName: zhc.netty.NioEchoClient 
+ * @Description: TODO
+ * @author zhc
+ * @date 2019年9月27日
+ */
+public class NioEchoClient {
 	private static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) throws IOException {
@@ -32,8 +38,5 @@ public class NIOEchoClient {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
-	
-	
 }

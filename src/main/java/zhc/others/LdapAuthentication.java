@@ -6,23 +6,19 @@ import javax.naming.AuthenticationException;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-//import javax.naming.directory.BasicAttribute;
-//import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 
-public class LDAPAuthentication {
+public class LdapAuthentication {
 
 	public static void main(String[] args) {
-		LDAPAuthentication ldap = new LDAPAuthentication();
-		// ldap.LDAP_connect();
+		LdapAuthentication ldap = new LdapAuthentication();
 		if (ldap.authenricate("ldapuser1", "password") == true) {
 			System.out.println("该用户认证成功");
 		}
-		// ldap.addUser("yorker","secret");
 	}
 
 	private final String URL = "ldap://192.168.99.101:389/";
@@ -31,7 +27,7 @@ public class LDAPAuthentication {
 	private LdapContext ctx = null;
 	private final Control[] connCtls = null;
 
-	private void LDAP_connect() {
+	private void ldapConnect() {
 		Hashtable<String, String> env = new Hashtable<String, String>();
 		env.put(Context.INITIAL_CONTEXT_FACTORY, FACTORY);
 		env.put(Context.PROVIDER_URL, URL + BASEDN);
@@ -64,7 +60,7 @@ public class LDAPAuthentication {
 
 	private String getUserDN(String uid) {
 		String userDN = "";
-		LDAP_connect();
+		ldapConnect();
 		try {
 			SearchControls constraints = new SearchControls();
 			constraints.setSearchScope(SearchControls.SUBTREE_SCOPE);
@@ -90,9 +86,9 @@ public class LDAPAuthentication {
 		return userDN;
 	}
 
-	public boolean authenricate(String UID, String password) {
+	public boolean authenricate(String uid, String password) {
 		boolean valide = false;
-		String userDN = getUserDN(UID);
+		String userDN = getUserDN(uid);
 		try {
 			ctx.addToEnvironment(Context.SECURITY_PRINCIPAL, userDN);
 			ctx.addToEnvironment(Context.SECURITY_CREDENTIALS, password);

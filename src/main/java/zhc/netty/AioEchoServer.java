@@ -7,21 +7,39 @@ import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-public class AIOEchoServer{
+/**
+ * ClassName: zhc.netty.AioEchoServer 
+ * @Description: TODO
+ * @author zhc
+ * @date 2019年9月27日
+ */
+public class AioEchoServer{
 	
 	public static void main(String[] args) throws Exception {
-		new AIOEchoServer().test1();
+		new AioEchoServer().test1();
 	}
 	
 	public void test1() throws Exception {
-		new Thread(new AIOServerThread()).start();
+		ExecutorService executorService = new ThreadPoolExecutor(3, 3, 0, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<Runnable>());
+		executorService.execute(new AioServerThread());
+		executorService.shutdown();
 	}
 	
-	class AIOServerThread implements Runnable {
+	/**
+	 * ClassName: zhc.netty.AioServerThread 
+	 * @Description: TODO
+	 * @author zhc
+	 * @date 2019年9月27日
+	 */
+	class AioServerThread implements Runnable {
 		private AsynchronousServerSocketChannel serverChannel;
 		private CountDownLatch latch;
-		public AIOServerThread() throws Exception {
+		public AioServerThread() throws Exception {
 			latch = new CountDownLatch(1);
 			serverChannel = AsynchronousServerSocketChannel.open();
 			serverChannel.bind(new InetSocketAddress(8011));
@@ -50,10 +68,10 @@ public class AIOEchoServer{
 		}
 	}
 	
-	class AcceptHandler implements CompletionHandler<AsynchronousSocketChannel, AIOServerThread> {
+	class AcceptHandler implements CompletionHandler<AsynchronousSocketChannel, AioServerThread> {
 
 		@Override
-		public void completed(AsynchronousSocketChannel clientChannel, AIOServerThread aioThread) {
+		public void completed(AsynchronousSocketChannel clientChannel, AioServerThread aioThread) {
 			System.out.println("AcceptHandler completed()");
 			aioThread.getServerChannel().accept(aioThread, this);	//接收连接
 			ByteBuffer buffer = ByteBuffer.allocate(50);
@@ -61,7 +79,7 @@ public class AIOEchoServer{
 		}
 
 		@Override
-		public void failed(Throwable exc, AIOServerThread attachment) {
+		public void failed(Throwable exc, AioServerThread attachment) {
 			System.err.println("客户端连接创建失败...");
 			attachment.getLatch().countDown();
 		}

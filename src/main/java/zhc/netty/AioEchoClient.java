@@ -7,18 +7,30 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-public class AIOEchoClient {
+/**
+ * ClassName: zhc.netty.AioEchoClient 
+ * @Description: TODO
+ * @author zhc
+ * @date 2019年9月27日
+ */
+public class AioEchoClient {
 	public static void main(String[] args) throws IOException {
-		new AIOEchoClient().test1();
+		new AioEchoClient().test1();
 	}
 
 
 	public void test1() throws IOException {
-		AIOClientThread client = new AIOClientThread();
-		new Thread(client).start();
+		AioClientThread client = new AioClientThread();
+		ExecutorService executorService = new ThreadPoolExecutor(3, 3, 0, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<Runnable>());
+		executorService.execute(client);
 		while (client.sendMessage(getString("请输入要发送的内容："))) {
 		}
+		executorService.shutdown();
 	}
 
 	private static Scanner scanner = new Scanner(System.in);
@@ -27,11 +39,17 @@ public class AIOEchoClient {
 		return scanner.next();
 	}
 
-	class AIOClientThread implements Runnable {
+	/**
+	 * ClassName: zhc.netty.AioClientThread 
+	 * @Description: TODO
+	 * @author zhc
+	 * @date 2019年9月27日
+	 */
+	class AioClientThread implements Runnable {
 		private AsynchronousSocketChannel clientChannel;
 		private CountDownLatch latch;
 
-		public AIOClientThread() {
+		public AioClientThread() {
 			try {
 				clientChannel = AsynchronousSocketChannel.open();
 			} catch (IOException e) {

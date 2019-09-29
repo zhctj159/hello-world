@@ -8,7 +8,13 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 
-public class JSONDecoder extends MessageToMessageDecoder<ByteBuf> {
+/**
+ * ClassName: zhc.netty.JsonDecoder 
+ * @Description: TODO
+ * @author zhc
+ * @date 2019年9月27日
+ */
+public class JsonDecoder extends MessageToMessageDecoder<ByteBuf> {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf msg, List<Object> list) throws Exception {
         int len = msg.readableBytes(); // 可以用的数据长度

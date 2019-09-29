@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class PropagationTest extends SpringTestCase {
 	@Autowired
-	private UserService userService;
+	private UserServiceTest userService;
 	
 	@Test
 	public void test() {

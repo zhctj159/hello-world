@@ -5,6 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -13,15 +16,16 @@ import java.util.concurrent.TimeUnit;
  * @time 2019年8月13日 下午4:39:21
  */
 public class DelayQueueTest {
-    //是否开启自动取消功能
+    /** 是否开启自动取消功能 */
     static int isStarted = 1;
-    //延迟队列，用来存放订单对象
+    /** 延迟队列，用来存放订单对象 */
     static DelayQueue<Order> queue = new DelayQueue<>();
 
     public static void main(String[] args) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         //新建一个线程，用来模拟定时取消订单job
-        Thread t1 = new Thread(() -> {
+        ExecutorService executorService = new ThreadPoolExecutor(3, 3, 0, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<Runnable>());
+		executorService.execute(() -> {
             System.out.println("开启自动取消订单job,当前时间："+ LocalDateTime.now().format(formatter));
             while (isStarted == 1) {
                 try {
@@ -35,10 +39,9 @@ public class DelayQueueTest {
                 }
             }
         });
-        t1.start();
-
-        //新建一个线程，模拟提交订单
-        Thread t2 = new Thread(() -> {
+		
+		//新建一个线程，模拟提交订单
+		executorService.execute(() -> {
             //定义最早的订单的创建时间
             long beginTime = System.currentTimeMillis();
             //下面模拟3个订单，每个订单的创建时间依次延后3秒
@@ -48,7 +51,7 @@ public class DelayQueueTest {
             beginTime += 3000L;
             queue.add(new Order("SO003", 100, "CREATED", new Date(beginTime), new Date(beginTime + 3000)));
         });
-        t2.start();
+		executorService.shutdown();
     }
 }
 

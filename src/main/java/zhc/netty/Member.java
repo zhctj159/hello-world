@@ -2,6 +2,12 @@ package zhc.netty;
 
 import java.io.Serializable;
 
+/**
+ * ClassName: zhc.netty.Member 
+ * @Description: TODO
+ * @author zhc
+ * @date 2019年9月27日
+ */
 public class Member implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

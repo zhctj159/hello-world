@@ -7,14 +7,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UserService extends SpringTestCase {
+public class UserServiceTest extends SpringTestCase {
 	@Autowired
 	private User1Service user1Service;
 	@Autowired
 	private User2Service user2Service;
 
 	@Test
-	@Transactional
+	@Transactional(rollbackFor=Exception.class)
 	public void test71() {
 		User user = new User();
 		user.setId(711);
@@ -25,7 +25,7 @@ public class UserService extends SpringTestCase {
 	}
 	
 	@Test
-	@Transactional
+	@Transactional(rollbackFor=Exception.class)
 	public void test61() {
 		User user = new User();
 		user.setId(611);
@@ -43,7 +43,7 @@ public class UserService extends SpringTestCase {
 	}
 	
 	@Test
-	@Transactional
+	@Transactional(rollbackFor=Exception.class)
 	public void test51() {
 		User user = new User();
 		user.setId(511);
@@ -62,7 +62,7 @@ public class UserService extends SpringTestCase {
 	}
 	
 	@Test
-	@Transactional
+	@Transactional(rollbackFor=Exception.class)
 	public void test41() {
 		User user = new User();
 		user.setId(411);
@@ -72,7 +72,7 @@ public class UserService extends SpringTestCase {
 		throw new RuntimeException();
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.REQUIRED,rollbackFor=Exception.class)
 	public void test33() {
 		User user = new User();
 		user.setId(331);
@@ -84,7 +84,7 @@ public class UserService extends SpringTestCase {
 		throw new RuntimeException();
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.REQUIRED,rollbackFor=Exception.class)
 	public void test34() {
 		User user = new User();
 		user.setId(341);
@@ -95,7 +95,7 @@ public class UserService extends SpringTestCase {
 		user2Service.addNestedException(user);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.REQUIRED,rollbackFor=Exception.class)
 	public void test35() {
 		User user = new User();
 		user.setId(351);
@@ -133,7 +133,7 @@ public class UserService extends SpringTestCase {
 		user2Service.addNestedException(user);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.REQUIRED,rollbackFor=Exception.class)
 	public void test23() {
 		User user = new User();
 		user.setId(231);
@@ -148,7 +148,7 @@ public class UserService extends SpringTestCase {
 		throw new RuntimeException();
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.REQUIRED,rollbackFor=Exception.class)
 	public void test24() {
 		User user = new User();
 		user.setId(241);
@@ -162,7 +162,7 @@ public class UserService extends SpringTestCase {
 		user2Service.addRequiresNewException(user);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.REQUIRED,rollbackFor=Exception.class)
 	public void test25() {
 		User user = new User();
 		user.setId(251);

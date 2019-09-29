@@ -6,19 +6,19 @@ package zhc.others;
  * @author zhc
  * @time 2019年8月6日 上午9:56:41
  */
-public class FinalizeEscapeGC {
+public class FinalizeEscapeGc {
 	
-	public static FinalizeEscapeGC SAVE_HOOK = null;
+	public static FinalizeEscapeGc SAVE_HOOK = null;
 	
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
 		System.out.println("finalize method executed!");
-		FinalizeEscapeGC.SAVE_HOOK = this;
+		FinalizeEscapeGc.SAVE_HOOK = this;
 	}
 	
 	public static void main(String[] args) throws Throwable {
-		SAVE_HOOK = new FinalizeEscapeGC();
+		SAVE_HOOK = new FinalizeEscapeGc();
 		
 		//对象第一次成功拯救了自己
 		SAVE_HOOK = null;

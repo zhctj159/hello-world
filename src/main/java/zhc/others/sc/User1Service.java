@@ -12,57 +12,57 @@ public class User1Service {
 	private User1Mapper mapper;
 	
 	/** REQUIRED：总是运行在事务中。如果当前存在事务，则加入当前事务，如果不存在则新建事务运行 */
-	@Transactional(propagation=Propagation.REQUIRED)
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
 	public void addRequired(User user) {
 		mapper.addUser(user);
 	}
 	
 	/** REQUIRES_NEW：总是新建一个事务执行，如果当前存在事务，则挂起当前事务 */
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	@Transactional(propagation=Propagation.REQUIRES_NEW,rollbackFor=Exception.class)
 	public void addRequiresNew(User user) {
 		mapper.addUser(user);
 	}
 	
 	/** NESTED： 作为当前事务的嵌套事务，可单独提交、回滚 */
-	@Transactional(propagation = Propagation.NESTED)
+	@Transactional(propagation = Propagation.NESTED,rollbackFor=Exception.class)
     public void addNested(User user){
         mapper.addUser(user);
     }
 	
 	/** MANDATORY：必须运行在事务中，如当前不存在事务，则抛出异常 */
-	@Transactional(propagation = Propagation.MANDATORY)
+	@Transactional(propagation = Propagation.MANDATORY,rollbackFor=Exception.class)
     public void addMandatory(User user){
         mapper.addUser(user);
     }
 	
 	/** SUPPORTES：不需要事务上下文，如有则加入事务，如无正常运行 */
-	@Transactional(propagation = Propagation.SUPPORTS)
+	@Transactional(propagation = Propagation.SUPPORTS,rollbackFor=Exception.class)
     public void addSupports(User user){
         mapper.addUser(user);
     }
 	
 	/** SUPPORTES：不需要事务上下文，如有则加入事务，如无正常运行 */
-	@Transactional(propagation = Propagation.SUPPORTS)
+	@Transactional(propagation = Propagation.SUPPORTS,rollbackFor=Exception.class)
     public void addSupportsException(User user){
         mapper.addUser(user);
         throw new RuntimeException();
     }
 	
 	/** NOT_SUPPORTED：不允许运行在事务中，如有事务则挂起该事务 */
-	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(propagation = Propagation.NOT_SUPPORTED,rollbackFor=Exception.class)
     public void addNotSupported(User user){
         mapper.addUser(user);
     }
 	
 	/** NOT_SUPPORTED：不允许运行在事务中，如有事务则挂起该事务 */
-	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(propagation = Propagation.NOT_SUPPORTED,rollbackFor=Exception.class)
     public void addNotSupportedException(User user){
         mapper.addUser(user);
         throw new RuntimeException();
     }
 	
 	/** NEVER：不允许运行在事务中，如果当前有事务则报错 */
-	@Transactional(propagation = Propagation.NEVER)
+	@Transactional(propagation = Propagation.NEVER,rollbackFor=Exception.class)
     public void addNever(User user){
         mapper.addUser(user);
     }

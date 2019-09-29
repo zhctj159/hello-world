@@ -35,8 +35,9 @@ public class ZookeeperLock implements Lock, Watcher {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-		    if(lock != null)
+		    if(lock != null) {
 		        lock.unlock();
+		    }
 		}
 	}
 	

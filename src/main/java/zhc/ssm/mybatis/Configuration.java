@@ -61,7 +61,7 @@ public class Configuration {
 	}
 
 	private void evalDataSource(Element node) {
-		if (!node.getName().equals("database")) {
+		if (!"database".equals(node.getName())) {
 			throw new RuntimeException("root should be <database>");
 		}
 		for (Object item : node.elements()) {

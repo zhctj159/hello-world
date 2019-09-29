@@ -106,8 +106,12 @@ public class SortTest {
 		int j = high;
 		int k = a[low];
 		while (i<j) {
-			while (i<j && a[j]>k) j--;	//从右向左找到第一个小于k的
-			while (i<j && a[i]<=k) i++;	//从左向右找到第一个大于k的
+			while (i<j && a[j]>k) {
+				j--;	//从右向左找到第一个小于k的
+			}
+			while (i<j && a[i]<=k) {
+				i++;	//从左向右找到第一个大于k的
+			}
 			if (i<j) {		//交换，小的交换到左边，大的交换到右边
 				int t = a[i];
 				a[i] = a[j];

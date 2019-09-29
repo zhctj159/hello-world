@@ -1,5 +1,8 @@
 package zhc.thread;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 import java.util.concurrent.locks.Condition;
@@ -9,8 +12,9 @@ public class MyLock implements Lock {
 	
 	public static void main(String[] args) {
 		Lock lock = new MyLock();
+		ExecutorService executorService = new ThreadPoolExecutor(10, 10, 0, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<Runnable>());
 		for (int i = 0; i < 10; i++) {
-			new Thread(new Runnable() {
+			executorService.execute(new Runnable() {
 				@Override
 				public void run() {
 					try {
@@ -23,8 +27,9 @@ public class MyLock implements Lock {
 						lock.unlock();
 					}
 				}
-			}).start();
+			});
 		}
+		executorService.shutdown();
 	}
 
 	static class Sync extends AbstractQueuedSynchronizer {

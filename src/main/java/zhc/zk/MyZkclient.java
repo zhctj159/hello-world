@@ -1,6 +1,8 @@
 package zhc.zk;
 
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -10,7 +12,7 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
 
-public class MyZKClient {
+public class MyZkclient {
 	private static CuratorFramework client = CuratorFrameworkFactory.builder()
 			.connectString("127.0.0.1:2181")
 			.sessionTimeoutMs(50000).connectionTimeoutMs(30000)
@@ -34,7 +36,7 @@ public class MyZKClient {
 			public void processResult(CuratorFramework curatorFramework, CuratorEvent curatorEvent) throws Exception {
 				System.out.println("当前线程:" + Thread.currentThread().getName() + ",code:" + curatorEvent.getResultCode() + ",type:" + curatorEvent.getType());
 			}
-		}, Executors.newFixedThreadPool(10)).forPath("/async-curator-my");
+		}, new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>())).forPath("/async-curator-my");
 		client.create().withMode(CreateMode.EPHEMERAL).inBackground(new BackgroundCallback() {
 			@Override
 			public void processResult(CuratorFramework curatorFramework, CuratorEvent curatorEvent) throws Exception {

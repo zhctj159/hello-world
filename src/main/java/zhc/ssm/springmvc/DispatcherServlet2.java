@@ -32,6 +32,7 @@ public class DispatcherServlet2 extends HttpServlet {
     }
 
     /** @see Servlet#init(ServletConfig) */
+    @Override
     public void init(ServletConfig config) throws ServletException {
         //包扫描，获取包中的文件
         scanPackage("zhc.ssm.springmvc");
@@ -62,8 +63,9 @@ public class DispatcherServlet2 extends HttpServlet {
     }
 
     public void handerMap(){
-        if(instanceMap.size()<=0)
+        if(instanceMap.size()<=0) {
             return;
+        }
         for(Map.Entry<String, Object> entry:instanceMap.entrySet()){
         	Class<?> clazz = entry.getValue().getClass();
             if(clazz.isAnnotationPresent(MyController.class)){
@@ -86,7 +88,9 @@ public class DispatcherServlet2 extends HttpServlet {
          }
      }
      public void ioc(){
-         if(instanceMap.isEmpty())return;
+         if(instanceMap.isEmpty()) {
+        	 return;
+         }
          for(Map.Entry<String, Object> entry:instanceMap.entrySet()){
              Field[] fields=    entry.getValue().getClass().getDeclaredFields();//拿到类里面的属性
              for (Field field : fields) {
@@ -131,12 +135,14 @@ public class DispatcherServlet2 extends HttpServlet {
      }
      
      /** @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response) */
+     @Override
      protected void doGet(HttpServletRequest request,
              HttpServletResponse response) throws ServletException, IOException {
          this.doPost(request, response);
      }
  
      /** @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) */
+     @Override
      protected void doPost(HttpServletRequest request,
              HttpServletResponse response) throws ServletException, IOException {
          String url= request.getRequestURI();

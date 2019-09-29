@@ -13,6 +13,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.test.context.junit4.SpringRunner;
 
+/**
+ * ClassName: zhc.cache.GoodsTypeDaoImplTest 
+ * @Description: TODO
+ * @author zhc
+ * @date 2019年9月27日
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class GoodsTypeDaoImplTest {

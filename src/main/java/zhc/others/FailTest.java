@@ -16,8 +16,10 @@ import org.junit.Test;
  */
 public class FailTest {
 //	private static List<String> list = new ArrayList<String>();
+	/** CopyOnWriteArrayList */
 	private static List<String> list = new CopyOnWriteArrayList<String>();
 	private static ThreadLocal<List<String>> local = new ThreadLocal<List<String>>(){
+		@Override
 		protected List<String> initialValue() {
 			return new ArrayList<String>();
 		};
@@ -37,7 +39,7 @@ public class FailTest {
 	
 	@Test
     public void test() {
-		ConcurrentHashMap<String, String> phones = new ConcurrentHashMap<>();
+		ConcurrentHashMap<String, String> phones = new ConcurrentHashMap<>(16);
 		phones.put("Apple", "iPhone");
 		phones.put("Samsung", "Galaxy");
 		phones.put("Moto", "Z Play");

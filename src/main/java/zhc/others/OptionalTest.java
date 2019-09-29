@@ -47,8 +47,9 @@ public class OptionalTest {
 	 */
 	public static String getName1(User u) {
 	    Optional<User> user = Optional.ofNullable(u);
-	    if (!user.isPresent())
+	    if (!user.isPresent()) {
 	        return "Unknown";
+	    }
 	    return user.get().name;
 	}
 	

@@ -1,11 +1,15 @@
 package zhc.thread;
 
+import java.util.Random;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -71,7 +75,7 @@ public class SynchronizedUtil {
 						String name = Thread.currentThread().getName();
 						lock.lock();
 						System.err.println(name + "锁定成功");
-						long time = (long) (Math.random() * 2000);
+						long time = new Random(2000).nextLong();
 						Thread.sleep(time);
 						System.out.println(name + "完成工作，耗时：" + time);
 					} catch (InterruptedException e) {
@@ -90,7 +94,9 @@ public class SynchronizedUtil {
 		final Condition reachThreeCondition = lock.newCondition();	// 第一个条件当屏幕上输出到3
 		final Condition reachSixCondition = lock.newCondition();	// 第二个条件当屏幕上输出到6
 		final NumberWrapper num = new NumberWrapper();
-		Thread threadA = new Thread(new Runnable() {
+		
+		ExecutorService executorService = new ThreadPoolExecutor(3, 3, 0, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<Runnable>());
+		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
 				lock.lock();
@@ -112,16 +118,14 @@ public class SynchronizedUtil {
 						System.out.println(num.value);
 						num.value++;
 					}
-
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} finally {
 					lock.unlock();
 				}
 			}
-
 		});
-		Thread threadB = new Thread(new Runnable() {
+		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -146,10 +150,8 @@ public class SynchronizedUtil {
 					lock.unlock();
 				}
 			}
-
 		});
-		threadB.start();
-		threadA.start();
+		executorService.shutdown();
 	}
 
 	static class NumberWrapper {
@@ -167,12 +169,13 @@ public class SynchronizedUtil {
 				@Override
 				public void run() {
 					try {
-						long time = (long) (Math.random() * 5000);
+						Random r = new Random(5000);
+						long time = r.nextLong();
 						Thread.sleep(time);
 						comeFlag.countDown();
 						System.out.println(Thread.currentThread().getName() + "已经到达，耗时：" + time);
 						startFlag.await();
-						time = (long) (Math.random() * 5000);
+						time = r.nextLong();
 						Thread.sleep(time);
 						endFlag.countDown();
 						System.out.println(Thread.currentThread().getName() + "已经吃完，耗时：" + time);
@@ -199,13 +202,14 @@ public class SynchronizedUtil {
 				@Override
 				public void run() {
 					try {
-						long time = (long) (Math.random() * 5000);
+						Random r = new Random(5000);
+						long time = r.nextLong();
 						Thread.sleep(time);
 						System.out.println(Thread.currentThread().getName() + "已经到达，耗时：" + time);
 						if (cyclicBarrier.await() <= 0) {
 							System.out.println("------ 人员都已经达到，开饭 ------");
 						}
-						time = (long) (Math.random() * 5000);
+						time = r.nextLong();
 						Thread.sleep(time);
 						System.out.println(Thread.currentThread().getName() + "已经吃完，耗时：" + time);
 						if (cyclicBarrier.await() <= 0) {
@@ -233,7 +237,7 @@ public class SynchronizedUtil {
 				try {
 					semaphore.acquire();
 					System.err.println(name + "获得笔");
-					long time = (long) (Math.random() * 2000);
+					long time = new Random(2000).nextLong();
 					Thread.sleep(time);
 					System.out.println(name + "用完笔，耗时：" + time);
 				} catch (InterruptedException e) {

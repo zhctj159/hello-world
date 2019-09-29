@@ -10,12 +10,21 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-public class NIOEchoServer {
+/**
+ * ClassName: zhc.netty.NioEchoServer 
+ * @Description: TODO
+ * @author zhc
+ * @date 2019年9月27日
+ */
+public class NioEchoServer {
 	public static void main(String[] args) throws IOException {
 		try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
-			ExecutorService executorService = Executors.newFixedThreadPool(10);
+			int nThreads = 10;
+			ExecutorService executorService = new ThreadPoolExecutor(nThreads, nThreads, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 			serverSocketChannel.configureBlocking(false);	//非阻塞模式
 			serverSocketChannel.bind(new InetSocketAddress(8011));
 			Selector selector = Selector.open();
@@ -46,6 +55,12 @@ public class NIOEchoServer {
 		
 	}
 	
+	/**
+	 * ClassName: zhc.netty.EchoClientHandler 
+	 * @Description: TODO
+	 * @author zhc
+	 * @date 2019年9月27日
+	 */
 	private static class EchoClientHandler implements Runnable {
 		private SocketChannel clientChannel;
 		private boolean flag = true;

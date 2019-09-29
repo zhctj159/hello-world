@@ -4,10 +4,17 @@ import java.util.Collections;
 
 import redis.clients.jedis.Jedis;
 
+/**
+ * ClassName: zhc.lock.RedisLockDistributed 
+ * @Description: TODO
+ * @author zhc
+ * @date 2019年9月27日
+ */
 public final class RedisLockDistributed {
 	private static final String LOCK_SUCCESS = "OK";
 	private static final String SET_IF_NOT_EXIST = "NX";
 	private static final String SET_WITH_EXPIRE_TIME = "PX";
+	private static final String OK = "OK";
 	private static final Long RELEASE_SUCCESS = 1L;
 
 	/**
@@ -31,7 +38,7 @@ public final class RedisLockDistributed {
 	
 	public boolean tryGetLock2(Jedis jedis,String lockKey,String requestId,int expireTime) {
 		String oo = jedis.set(lockKey, requestId, "NX", "PX", expireTime);
-		if ("OK".equals(oo)) {
+		if (OK.equals(oo)) {
 			return true;
 		}
 		return false;

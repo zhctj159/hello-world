@@ -1,6 +1,6 @@
 package zhc.spi;
 
-public class RedService implements DubboService {
+public class RedDubboServiceImpl implements DubboService {
 
 	@Override
 	public void sayHello() {

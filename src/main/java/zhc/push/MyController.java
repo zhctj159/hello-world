@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,7 +26,7 @@ public class MyController {
 			"青青草权出去入场从3查3促30从",
 			"23013r1c12cqwcq未来可出去吃"
 	};
-	private static ExecutorService executorService = Executors.newFixedThreadPool(10);
+	private static ExecutorService executorService = new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());;
 	
 	@RequestMapping(value="/realTimeNews")
 	@ResponseBody

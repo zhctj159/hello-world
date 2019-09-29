@@ -85,7 +85,7 @@ public class Server {
 						if (null==className || "".equals(className)) {
 							continue;
 						}
-						if (className.equals("index")) {
+						if ("index".equals(className)) {
 							className = "Index";
 						}
 						Class<?> clazz = Class.forName("zhc.tomcat."+className);

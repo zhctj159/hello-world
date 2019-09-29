@@ -71,23 +71,9 @@ public class ReferenceTest {
 			}
 		}
 
-//		public int _internal_map_size() {
-//			return objHashcodeToPyId.size();
-//		}
-
 		public void put(Object key, Object val) {
 			objHashcodeToPyId.put(new WeakIdKey(key), val);
 		}
-
-//		public Object get(Object key) {
-//			cleanup();
-//			return objHashcodeToPyId.get(new WeakIdKey(key));
-//		}
-
-//		public void remove(Object key) {
-//			cleanup(key.toString());
-//			objHashcodeToPyId.remove(new WeakIdKey(key));
-//		}
 	}
 
 	
@@ -100,7 +86,6 @@ public class ReferenceTest {
 		date = null;
 		System.gc();	//建议虚拟机回收垃圾
 		try {
-//			Reference<?> ref2 = queue.poll();
 			Reference<?> ref2 = queue.remove();
 			System.out.println(ref2);
 			System.out.println(ref2==ref);
@@ -194,12 +179,13 @@ public class ReferenceTest {
 	private static class MyDate extends Date {
 		private static final long serialVersionUID = 1L;
 
-		// 覆盖finalize()方法
+		@Override
 		protected void finalize() throws Throwable {
 			super.finalize();
 			System.out.println("obj [Date: " + this.getTime() + "] is gc");
 		}
 
+		@Override
 		public String toString() {
 			return "Date: " + this.getTime();
 		}

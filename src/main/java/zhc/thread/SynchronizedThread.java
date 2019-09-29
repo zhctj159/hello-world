@@ -1,6 +1,9 @@
 package zhc.thread;
 
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -15,7 +18,7 @@ public class SynchronizedThread {
     /** 建立线程，调用内部类 */
 	public void useThread() {
 		final IBank bank = new Bank6();
-		Runnable new_thread = new Runnable() {
+		Runnable newThread = new Runnable() {
 			@Override
 			public void run() {
 				for (int i = 0; i < 10; i++) {
@@ -24,12 +27,15 @@ public class SynchronizedThread {
 				}
 			}
 		};
+		
+		ExecutorService executorService = new ThreadPoolExecutor(3, 3, 0, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<Runnable>());
+		
 		System.out.println("线程1");
-		Thread thread1 = new Thread(new_thread);
-		thread1.start();
+		executorService.execute(newThread);
 		System.out.println("线程2");
-		Thread thread2 = new Thread(new_thread);
-		thread2.start();
+		executorService.execute(newThread);
+		
+		executorService.shutdown();
 	}
 	
 	/** 7.使用原子变量实现线程同步 */
@@ -38,9 +44,11 @@ public class SynchronizedThread {
 //		public AtomicInteger getAccount() {
 //			return account;
 //		}
+		@Override
 		public int getAccount() {
 			return account.get();
 		}
+		@Override
 		public void save(int money) {
 			account.addAndGet(money);
 		}
@@ -74,9 +82,11 @@ public class SynchronizedThread {
                 return 100;
             }
         };
+        @Override
         public void save(int money){
             account.set(account.get()+money);
         }
+        @Override
         public int getAccount(){
             return account.get();
         }
@@ -87,10 +97,11 @@ public class SynchronizedThread {
         private int account = 100;
         //需要声明这个锁
         private Lock lock = new ReentrantLock();
+        @Override
         public int getAccount() {
             return account;
         }
-        //这里不再需要synchronized 
+        @Override
         public void save(int money) {
             lock.lock();
             try{
@@ -104,12 +115,13 @@ public class SynchronizedThread {
 
 	/** 3.使用特殊域变量（volatile）实现线程同步 */
 	class Bank3 implements IBank {
-		// 需要同步的变量加上volatile
+		/** 需要同步的变量加上volatile */
 		private volatile int account = 100;
+		@Override
 		public int getAccount() {
 			return account;
 		}
-		// 这里不再需要synchronized
+		@Override
 		public void save(int money) {
 			account += money;
 		}
@@ -118,6 +130,7 @@ public class SynchronizedThread {
 	/** 1.使用同步方法和同步代码块实现线程同步 */
 	class Bank1 implements IBank {
 		public int account = 100;
+		@Override
 		public int getAccount() {
 			return account;
 		}
@@ -126,6 +139,7 @@ public class SynchronizedThread {
 			account += money;
 		}
 		/** 2.用同步代码块实现 */
+		@Override
 		public void save(int money) {
 			synchronized (this) {
 				account += money;

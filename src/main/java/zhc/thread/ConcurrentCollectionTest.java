@@ -19,10 +19,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
@@ -31,7 +32,7 @@ public class ConcurrentCollectionTest {
 		ConcurrentCollectionTest test = new ConcurrentCollectionTest();
 		test.testMap();
 		
-		Map<String, Object> synchronizedMap = Collections.synchronizedMap(new HashMap<String, Object>());
+		Map<String, Object> synchronizedMap = Collections.synchronizedMap(new HashMap<String, Object>(16));
 		System.out.println(synchronizedMap.size());
 	}
 	
@@ -72,7 +73,7 @@ public class ConcurrentCollectionTest {
 		new CopyOnWriteArrayList<String>();		//ArrayList
 		new CopyOnWriteArraySet<String>();		//ArraySet
 		new ConcurrentSkipListSet<String>();	//TreeSet
-		new ConcurrentHashMap<String, Integer>();		//HashMap
+		new ConcurrentHashMap<String, Integer>(16);		//HashMap
 		new ConcurrentSkipListMap<String, Integer>();	//TreeMap
 	}
 	
@@ -88,7 +89,9 @@ public class ConcurrentCollectionTest {
 	public void testArrayList() throws InterruptedException {
 		List<Integer> list = null;
 		long start=0,end=0;
-		ExecutorService executorService = Executors.newFixedThreadPool(5);
+		ExecutorService executorService = new ThreadPoolExecutor(5, 5,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>());
 		CountDownLatch latch = new CountDownLatch(10000000);
 		
 		list = new ArrayList<Integer>();
@@ -139,19 +142,20 @@ public class ConcurrentCollectionTest {
 	
 	@Test
 	public void testMap(){
+		int size = 10000000;
 		Map<String, Integer> map = null;
 		long start=0,end=0;
-		map = new HashMap<String, Integer>();
+		map = new HashMap<String, Integer>(size);
 		start = System.currentTimeMillis();
-		for (int i = 0; i < 10000000; i++) {
+		for (int i = 0; i < size; i++) {
 			map.put(""+i, i);
 		}
 		end = System.currentTimeMillis();
 		System.out.println("耗时："+(end-start));
 		
-		map = new ConcurrentHashMap<String, Integer>();
+		map = new ConcurrentHashMap<String, Integer>(size);
 		start = System.currentTimeMillis();
-		for (int i = 0; i < 10000000; i++) {
+		for (int i = 0; i < size; i++) {
 			map.put(""+i, i);
 		}
 		end = System.currentTimeMillis();

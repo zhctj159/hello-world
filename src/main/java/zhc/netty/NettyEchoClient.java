@@ -14,6 +14,12 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.util.ReferenceCountUtil;
 
+/**
+ * ClassName: zhc.netty.NettyEchoClient 
+ * @Description: TODO
+ * @author zhc
+ * @date 2019年9月27日
+ */
 public class NettyEchoClient {
 	
 	public static void main(String[] args) {
@@ -33,9 +39,9 @@ public class NettyEchoClient {
 				@Override
 				protected void initChannel(SocketChannel socketChannel) throws Exception {
 					socketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 4));//拆包器
-                    socketChannel.pipeline().addLast(new JSONDecoder());
+                    socketChannel.pipeline().addLast(new JsonDecoder());
                     socketChannel.pipeline().addLast(new LengthFieldPrepender(4));
-                    socketChannel.pipeline().addLast(new JSONEncoder());
+                    socketChannel.pipeline().addLast(new JsonEncoder());
                     socketChannel.pipeline().addLast(new EchoClientHandler()); // 追加了处理器
 				}
 			});

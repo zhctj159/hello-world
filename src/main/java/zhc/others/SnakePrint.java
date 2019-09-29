@@ -6,22 +6,22 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class SnakePrint {
 	/** 分层标记 */
-	private static BTreeNode xx = new BTreeNode(Integer.MAX_VALUE);
+	private static BtreeNode xx = new BtreeNode(Integer.MAX_VALUE);
 	/** 树根 */
-	private static BTreeNode root;
+	private static BtreeNode root;
 	static {
-		BTreeNode t01,t02,t11,t12;
-		t01 = new BTreeNode(5);
-		t02 = new BTreeNode(7);
-		t11 = new BTreeNode(6);
+		BtreeNode t01,t02,t11,t12;
+		t01 = new BtreeNode(5);
+		t02 = new BtreeNode(7);
+		t11 = new BtreeNode(6);
 		t11.left = t01;
 		t11.right = t02;
-		t01 = new BTreeNode(9);
-		t02 = new BTreeNode(11);
-		t12 = new BTreeNode(10);
+		t01 = new BtreeNode(9);
+		t02 = new BtreeNode(11);
+		t12 = new BtreeNode(10);
 		t12.left = t01;
 		t12.right = t02;
-		root = new BTreeNode(8);
+		root = new BtreeNode(8);
 		root.left = t11;
 		root.right = t12;
 	}
@@ -34,13 +34,13 @@ public class SnakePrint {
 	
 	
 	public static void print() {
-		MyQueue<BTreeNode> nodes = new MyQueue<BTreeNode>(new BTreeNode[1024]);
-		MyStack<BTreeNode> stack = new MyStack<BTreeNode>(new BTreeNode[1024]);
+		MyQueue<BtreeNode> nodes = new MyQueue<BtreeNode>(new BtreeNode[1024]);
+		MyStack<BtreeNode> stack = new MyStack<BtreeNode>(new BtreeNode[1024]);
 		nodes.add(root);
 		nodes.add(xx);
 		boolean flag = true;
 		while (!nodes.isEmpty()) {
-			BTreeNode n = nodes.poll();
+			BtreeNode n = nodes.poll();
 			if (n==xx) {
 				while (!flag && !stack.isEmpty()) {
 					System.out.print(stack.pop().val+" ");
@@ -68,14 +68,14 @@ public class SnakePrint {
 	}
 	
 	public static void print1() {
-		Queue<BTreeNode> nodes = new LinkedBlockingQueue<BTreeNode>();
-		Queue<BTreeNode> nodes2 = new LinkedBlockingQueue<BTreeNode>();
-		Stack<BTreeNode> stack = new Stack<BTreeNode>();
+		Queue<BtreeNode> nodes = new LinkedBlockingQueue<BtreeNode>();
+		Queue<BtreeNode> nodes2 = new LinkedBlockingQueue<BtreeNode>();
+		Stack<BtreeNode> stack = new Stack<BtreeNode>();
 		nodes.add(root);
 		nodes.add(xx);
 		boolean flag = true;
 		while (!nodes.isEmpty()) {
-			BTreeNode n = nodes.poll();
+			BtreeNode n = nodes.poll();
 			if (flag) {
 				nodes2.add(n);
 			} else {
@@ -84,7 +84,7 @@ public class SnakePrint {
 			if (n==xx) {
 				if (!flag && !stack.empty()) {
 					while (!flag && !stack.empty()) {
-						BTreeNode nn = stack.pop();
+						BtreeNode nn = stack.pop();
 						if (nn!=xx) {
 							nodes2.add(nn);
 						}
@@ -106,7 +106,7 @@ public class SnakePrint {
 			}
 		}
 		while (!nodes2.isEmpty()) {
-			BTreeNode n = nodes2.poll();
+			BtreeNode n = nodes2.poll();
 			if (n==xx) {
 				System.out.println();
 				continue;
@@ -195,11 +195,11 @@ public class SnakePrint {
 		}
 	}
 	
-	static class BTreeNode {
-		BTreeNode left;
-		BTreeNode right;
+	static class BtreeNode {
+		BtreeNode left;
+		BtreeNode right;
 		int val;
-		public BTreeNode(int val) {
+		public BtreeNode(int val) {
 			this.val = val;
 		}
 		

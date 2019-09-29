@@ -19,7 +19,7 @@ public class SingletonTest {
 	/** 反射破坏单例测试-enum */
 	public static void test3() throws Exception {
 		// 反射破坏单例
-		Singleton5 instance = Singleton5.instance;
+		Singleton5 instance = Singleton5.INSTANCE;
 		Constructor<Singleton5> con = Singleton5.class.getDeclaredConstructor(String.class,int.class);
 		con.setAccessible(true);
 		Singleton5 obj = con.newInstance("zhaihc3", 32);
