@@ -31,8 +31,6 @@ public class SnakePrint {
 		quickSlowList();
 	}
 	
-	
-	
 	public static void print() {
 		MyQueue<BtreeNode> nodes = new MyQueue<BtreeNode>(new BtreeNode[1024]);
 		MyStack<BtreeNode> stack = new MyStack<BtreeNode>(new BtreeNode[1024]);

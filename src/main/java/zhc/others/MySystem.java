@@ -15,25 +15,27 @@ public class MySystem {
 	
 	public static native void setOut(PrintStream out);
 	
-	public static final PrintStream OUT2 = null;
+	public static final PrintStream out2 = null;
 	
-	public static final PrintStream OUT = newPrintStream();
+	public static final PrintStream out = newPrintStream();
 	
 	private static PrintStream newPrintStream() {
 		PrintStream ps = null;
-		try (FileOutputStream fos = new FileOutputStream(FileDescriptor.out)) {
+		FileOutputStream fos = new FileOutputStream(FileDescriptor.out);
+		try {
+//		try (FileOutputStream fos = new FileOutputStream(FileDescriptor.out)) {
 			ps = new PrintStream(new BufferedOutputStream(fos, 128), true, "UTF-8");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return ps;
+		
 	}
 	
 	private MySystem() {}
 	
 	public static void main(String[] args) {
-		MySystem.OUT.println("Hello,World! -- print by MySystem.out");
-		
+		MySystem.out.println("Hello,World! -- print by MySystem.out");
 		//以下为通过文件载入，两种获取绝对路径方式
 		String tPath = MySystem.class.getResource("")+"zhc_others_MySystem.dll";
 		System.load(tPath.substring(6).replace("/", "\\").replace("%20", " "));
@@ -43,8 +45,21 @@ public class MySystem {
 		//载入库之后，使用java native方法调用库函数对final变量重新赋值
 		setOut(newPrintStream());
 		//测试效果，如果没载入则提示空指针异常
-		if (null!=OUT2) {
-			OUT2.println("Hello,World2! -- print by out2(final PrintStream out2 = null)");
+		if (null!=out2) {
+			out2.println("Hello,World2! -- print by out2(final PrintStream out2 = null)");
+		}
+	}
+	
+	public static void main2() {
+		MySystem.out.println("Hello,World! -- print by MySystem.out");
+		//以下为通过文件载入，两种获取绝对路径方式
+		String tPath = MySystem.class.getResource("")+"zhc_others_MySystem.dll";
+		System.load(tPath.substring(6).replace("/", "\\").replace("%20", " "));
+		//载入库之后，使用java native方法调用库函数对final变量重新赋值
+		setOut(newPrintStream());
+		//测试效果，如果没载入则提示空指针异常
+		if (null!=out2) {
+			out2.println("Hello,World2! -- print by out2(final PrintStream out2 = null)");
 		}
 	}
 }
